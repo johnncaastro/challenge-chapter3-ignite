@@ -1,5 +1,5 @@
 {
-  "apiEndpoint": "https://spacetravelingapp22.prismic.io/api/v2",
+  "apiEndpoint": "https://spacetravelingapp23.prismic.io/api/v2",
   "libraries": [
     "@/slices"
   ],

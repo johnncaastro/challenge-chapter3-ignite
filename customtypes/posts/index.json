@@ -1,6 +1,6 @@
 {
-  "id": "post",
-  "label": "post",
+  "id": "posts",
+  "label": "posts",
   "repeatable": true,
   "status": true,
   "json": {
@@ -59,7 +59,7 @@
                 "label": "body",
                 "placeholder": "",
                 "allowTargetBlank": true,
-                "multi": "strong,em,hyperlink,image,embed,list-item,o-list-item,rtl,paragraph"
+                "multi": "paragraph,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
               }
             }
           }

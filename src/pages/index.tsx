@@ -26,7 +26,7 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home() {
+export default function Home({ postsPagination }: HomeProps) {
   return (
     <>
       <Head>
@@ -47,54 +47,6 @@ export default function Home() {
               </span>
             </div>
           </a>
-
-          <a href="/">
-            <strong>Criando um app CRA do zero</strong>
-            <p>
-              Tudo sobre como criar a sua primeira aplicação utilizando Create
-              React App
-            </p>
-            <div>
-              <time>
-                <FiCalendar />1 Jan 2023
-              </time>
-              <span>
-                <FiUser />
-                Diego Fernandes
-              </span>
-            </div>
-          </a>
-
-          <a href="/">
-            <strong>Como utilizar Hooks</strong>
-            <p>Pensando em sincronização em vez de ciclos de vida.</p>
-            <div>
-              <time>
-                <FiCalendar />4 Jan 2023
-              </time>
-              <span>
-                <FiUser />
-                Jonathan Castro
-              </span>
-            </div>
-          </a>
-
-          <a href="/">
-            <strong>Criando um app CRA do zero</strong>
-            <p>
-              Tudo sobre como criar a sua primeira aplicação utilizando Create
-              React App
-            </p>
-            <div>
-              <time>
-                <FiCalendar />1 Jan 2023
-              </time>
-              <span>
-                <FiUser />
-                Diego Fernandes
-              </span>
-            </div>
-          </a>
         </div>
 
         <a href="/">Carregar mais posts</a>
@@ -105,7 +57,7 @@ export default function Home() {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType('post', { pageSize: 2 });
+  const postsResponse = await prismic.getByType('posts', { pageSize: 1 });
 
   console.log(postsResponse);
 

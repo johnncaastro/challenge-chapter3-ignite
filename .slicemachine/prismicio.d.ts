@@ -6,106 +6,106 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = {
     [KeyType in keyof T]: T[KeyType];
 };
-/** Content for post documents */
-interface PostDocumentData {
+/** Content for posts documents */
+interface PostsDocumentData {
     /**
-     * title field in *post*
+     * title field in *posts*
      *
      * - **Field Type**: Text
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.title
+     * - **API ID Path**: posts.title
      * - **Tab**: Main
      * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
      *
      */
     title: prismicT.KeyTextField;
     /**
-     * subtitle field in *post*
+     * subtitle field in *posts*
      *
      * - **Field Type**: Text
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.subtitle
+     * - **API ID Path**: posts.subtitle
      * - **Tab**: Main
      * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
      *
      */
     subtitle: prismicT.KeyTextField;
     /**
-     * author field in *post*
+     * author field in *posts*
      *
      * - **Field Type**: Text
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.author
+     * - **API ID Path**: posts.author
      * - **Tab**: Main
      * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
      *
      */
     author: prismicT.KeyTextField;
     /**
-     * banner field in *post*
+     * banner field in *posts*
      *
      * - **Field Type**: Image
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.banner
+     * - **API ID Path**: posts.banner
      * - **Tab**: Main
      * - **Documentation**: https://prismic.io/docs/core-concepts/image
      *
      */
     banner: prismicT.ImageField<never>;
     /**
-     * content field in *post*
+     * content field in *posts*
      *
      * - **Field Type**: Group
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.content[]
+     * - **API ID Path**: posts.content[]
      * - **Tab**: Main
      * - **Documentation**: https://prismic.io/docs/core-concepts/group
      *
      */
-    content: prismicT.GroupField<Simplify<PostDocumentDataContentItem>>;
+    content: prismicT.GroupField<Simplify<PostsDocumentDataContentItem>>;
 }
 /**
- * Item in post → content
+ * Item in posts → content
  *
  */
-export interface PostDocumentDataContentItem {
+export interface PostsDocumentDataContentItem {
     /**
-     * heading field in *post → content*
+     * heading field in *posts → content*
      *
      * - **Field Type**: Text
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.content[].heading
+     * - **API ID Path**: posts.content[].heading
      * - **Documentation**: https://prismic.io/docs/core-concepts/key-text
      *
      */
     heading: prismicT.KeyTextField;
     /**
-     * body field in *post → content*
+     * body field in *posts → content*
      *
      * - **Field Type**: Rich Text
      * - **Placeholder**: *None*
-     * - **API ID Path**: post.content[].body
+     * - **API ID Path**: posts.content[].body
      * - **Documentation**: https://prismic.io/docs/core-concepts/rich-text-title
      *
      */
     body: prismicT.RichTextField;
 }
 /**
- * post document from Prismic
+ * posts document from Prismic
  *
- * - **API ID**: `post`
+ * - **API ID**: `posts`
  * - **Repeatable**: `true`
  * - **Documentation**: https://prismic.io/docs/core-concepts/custom-types
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type PostDocument<Lang extends string = string> = prismicT.PrismicDocumentWithUID<Simplify<PostDocumentData>, "post", Lang>;
-export type AllDocumentTypes = PostDocument;
+export type PostsDocument<Lang extends string = string> = prismicT.PrismicDocumentWithUID<Simplify<PostsDocumentData>, "posts", Lang>;
+export type AllDocumentTypes = PostsDocument;
 declare module "@prismicio/client" {
     interface CreateClient {
         (repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
     }
     namespace Content {
-        export type { PostDocumentData, PostDocumentDataContentItem, PostDocument, AllDocumentTypes };
+        export type { PostsDocumentData, PostsDocumentDataContentItem, PostsDocument, AllDocumentTypes };
     }
 }
