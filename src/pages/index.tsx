@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
-
+import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../services/prismic';
-
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -27,6 +30,20 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
+  const [posts, setPosts] = useState<Post[]>(
+    postsPagination.results.map(result => ({
+      ...result,
+      first_publication_date: format(
+        new Date(result.first_publication_date),
+        'dd MMM yyyy',
+        {
+          locale: ptBR,
+        }
+      ),
+    }))
+  );
+
   return (
     <>
       <Head>
@@ -35,18 +52,20 @@ export default function Home({ postsPagination }: HomeProps) {
 
       <main className={styles.mainContainer}>
         <div className={styles.posts}>
-          <a href="/">
-            <strong>Como utilizar Hooks</strong>
-            <p>Pensando em sincronização em vez de ciclos de vida.</p>
-            <div>
-              <time>
-                <FiCalendar size={13} /> 4 Jan 2023
-              </time>
-              <span>
-                <FiUser size={15} /> Jonathan Castro
-              </span>
-            </div>
-          </a>
+          {posts.map(post => (
+            <Link key={post.uid} href={`/post/${post.uid}`}>
+              <strong>{post.data.title}</strong>
+              <p>{post.data.subtitle}</p>
+              <div>
+                <time>
+                  <FiCalendar size={13} /> {post.first_publication_date}
+                </time>
+                <span>
+                  <FiUser size={15} /> {post.data.author}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
 
         <a href="/">Carregar mais posts</a>
@@ -57,13 +76,12 @@ export default function Home({ postsPagination }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType('posts', { pageSize: 1 });
-
-  console.log(postsResponse);
+  const postsResponse = await prismic.getByType('posts', { pageSize: 5 });
 
   return {
     props: {
       postsPagination: postsResponse,
     },
+    revalidate: 60 * 30,
   };
 };
