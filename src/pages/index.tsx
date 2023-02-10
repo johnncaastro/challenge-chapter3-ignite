@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { RichText } from 'prismic-dom';
 import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -54,16 +53,18 @@ export default function Home({ postsPagination }: HomeProps) {
         <div className={styles.posts}>
           {posts.map(post => (
             <Link key={post.uid} href={`/post/${post.uid}`}>
-              <strong>{post.data.title}</strong>
-              <p>{post.data.subtitle}</p>
-              <div>
-                <time>
-                  <FiCalendar size={13} /> {post.first_publication_date}
-                </time>
-                <span>
-                  <FiUser size={15} /> {post.data.author}
-                </span>
-              </div>
+              <a>
+                <strong>{post.data.title}</strong>
+                <p>{post.data.subtitle}</p>
+                <div>
+                  <time>
+                    <FiCalendar size={13} /> {post.first_publication_date}
+                  </time>
+                  <span>
+                    <FiUser size={15} /> {post.data.author}
+                  </span>
+                </div>
+              </a>
             </Link>
           ))}
         </div>
@@ -76,12 +77,12 @@ export default function Home({ postsPagination }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient({});
-  const postsResponse = await prismic.getByType('posts', { pageSize: 5 });
+  const postsResponse = await prismic.getByType('posts', { pageSize: 1 });
 
   return {
     props: {
       postsPagination: postsResponse,
     },
-    revalidate: 60 * 30,
+    revalidate: 60 * 60 * 24,
   };
 };
